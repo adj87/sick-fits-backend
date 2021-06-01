@@ -1,18 +1,19 @@
-import { config, createSchema } from "@keystone-next/keystone/schema";
-import { createAuth } from "@keystone-next/auth";
-import "dotenv/config";
-import { User } from "./schemas/User";
+import { config, createSchema } from '@keystone-next/keystone/schema';
+import { createAuth } from '@keystone-next/auth';
+import 'dotenv/config';
+import { User } from './schemas/User';
 import {
   withItemData,
   statelessSessions,
-} from "@keystone-next/keystone/session";
-import { Product } from "./schemas/Product";
-import { ProductImage } from "./schemas/ProductImage";
-import { insertSeedData } from "./seed-data";
-import { sendPasswordResetEmail } from "./lib/mail";
+} from '@keystone-next/keystone/session';
+import { Product } from './schemas/Product';
+import { ProductImage } from './schemas/ProductImage';
+import { CartItem } from './schemas/CartItem';
+import { insertSeedData } from './seed-data';
+import { sendPasswordResetEmail } from './lib/mail';
 
 const databaseURL =
-  process.env.DATABASE_URL || "mongodb://localhost/keystone-sick-fits";
+  process.env.DATABASE_URL || 'mongodb://localhost/keystone-sick-fits';
 
 const sessionConfig = {
   maxAge: 60 * 60 * 24 * 360,
@@ -20,17 +21,17 @@ const sessionConfig = {
 };
 
 const { withAuth } = createAuth({
-  listKey: "User",
-  identityField: "email",
-  secretField: "password",
+  listKey: 'User',
+  identityField: 'email',
+  secretField: 'password',
   initFirstItem: {
-    fields: ["name", "email", "password"],
+    fields: ['name', 'email', 'password'],
   },
-  passwordResetLink:{
-    async sendToken(args){
-      await sendPasswordResetEmail(args.token,args.identity)
-    }
-  }
+  passwordResetLink: {
+    async sendToken(args) {
+      await sendPasswordResetEmail(args.token, args.identity);
+    },
+  },
 });
 
 export default withAuth(
@@ -42,10 +43,10 @@ export default withAuth(
       },
     },
     db: {
-      adapter: "mongoose",
+      adapter: 'mongoose',
       url: databaseURL,
       async onConnect(keystone) {
-        if (process.argv.includes("--seed-data")) {
+        if (process.argv.includes('--seed-data')) {
           await insertSeedData(keystone);
         }
       },
@@ -54,15 +55,16 @@ export default withAuth(
       User,
       Product,
       ProductImage,
+      CartItem,
     }),
     ui: {
       isAccessAllowed: ({ session }) => {
-        console.log("session", session);
+        console.log('session', session);
         return session?.data;
       },
     },
     session: withItemData(statelessSessions(sessionConfig), {
-      User: "id",
+      User: 'id',
     }),
   })
 );
