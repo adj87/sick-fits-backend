@@ -1,0 +1,17 @@
+version: "3"
+
+
+services: 
+    web:
+        container_name: exampleapp
+        build: .
+        ports: 
+            - 3000:3000
+        links: 
+            - mongo
+    mongo:
+        container_name: mymongo
+        image: mongo
+        ports: 
+            - "27017:27017"
+        
