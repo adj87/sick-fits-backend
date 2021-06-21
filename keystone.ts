@@ -13,7 +13,7 @@ import { insertSeedData } from './seed-data';
 import { sendPasswordResetEmail } from './lib/mail';
 
 const databaseURL =
-  process.env.DATABASE_URL || 'mongodb://mongo/keystone-sick-fits';
+  process.env.DATABASE_URL || 'mongodb://mongo:27017/sick-fits-keystone';
 
 const sessionConfig = {
   maxAge: 60 * 60 * 24 * 360,

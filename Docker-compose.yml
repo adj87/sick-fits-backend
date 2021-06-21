@@ -1,17 +1,19 @@
 version: "3"
 
-
 services: 
     web:
-        container_name: exampleapp
+        container_name: "backend"
         build: .
         ports: 
-            - 3000:3000
-        links: 
+            - "3000:3000"
+        depends_on: 
             - mongo
+
+    
     mongo:
-        container_name: mymongo
-        image: mongo
+        container_name: mongo
+        image: mongo:latest
+        expose: 
+            - "27017"
         ports: 
-            - "27017:27017"
-        
+            - "27017:27017"       

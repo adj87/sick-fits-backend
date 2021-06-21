@@ -1,0 +1,5 @@
+para arrancar por primera vez
+- docker-compose up
+
+para arrancar si tenemos cambios en el docker file
+- docker-compose --build
